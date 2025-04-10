@@ -13,6 +13,7 @@ using Microsoft.Purchases.Vendor;
 using Microsoft.Sales.Reports;
 using Microsoft.Sales.History;
 using System.Environment;
+using Microsoft.Inventory.Item;
 using System.Visualization;
 using Microsoft.Finance.RoleCenters;
 using Microsoft.Intercompany;
@@ -100,7 +101,7 @@ page 50000 "Finance Management"
                 AccessByPermission = TableData "Report Inbox" = IMD;
                 ApplicationArea = Basic, Suite;
             }
-            
+
             systempart(Control1901377608; MyNotes)
             {
                 ApplicationArea = Basic, Suite;
@@ -434,7 +435,6 @@ page 50000 "Finance Management"
 
                 }
 
-
             }
 
 
@@ -596,12 +596,33 @@ page 50000 "Finance Management"
                 }
             }
 
+            group(Action58)// Inventory Management
 
-            group(Action4)
             {
-                Caption = 'Management';
+                Caption = 'Inventory Management';
+                action(ITM001)
+                {
+                    ApplicationArea = RelationshipMgmt;
+                    Caption = 'Items';
+                    Image = "Order";
+                    RunObject = page "Item List";
+                }
+
+
 
             }
+            group(Action59)
+            {
+                Caption = 'Fleet Management';
+                action(Fleet001)
+                {
+                    ApplicationArea = RelationshipMgmt;
+                    Caption = 'Fleet Management';
+                    Image = "Order";
+                    RunObject = page "Fleet Management List";
+                }
+            }
+
 
 
         }

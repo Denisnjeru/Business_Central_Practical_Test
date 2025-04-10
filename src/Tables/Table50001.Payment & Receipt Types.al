@@ -33,7 +33,7 @@ Table 50001 "Payment & Receipt Types"
         {
             DataClassification = ToBeClassified;
             NotBlank = true;
-            OptionMembers = " ",Receipt,Payment,Imprest,Claim,Advance;
+            OptionMembers = " ",Receipt,Payment,Imprest,Claim,Advance,"Fleet Mgt";
         }
         field(5; "VAT %"; Decimal)
         {

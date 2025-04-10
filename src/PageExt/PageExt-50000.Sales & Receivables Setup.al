@@ -11,6 +11,10 @@ PageExtension 50000 pageextension52188447 extends "Sales & Receivables Setup"
                 {
                     ApplicationArea = Basic;
                 }
+                field("Fleet Mgt Nos."; "Fleet Mgt Nos.")
+                {
+                    ApplicationArea = Basic;
+                }
                 field("Member Application Nos."; "Member Application Nos.")
                 {
                     ApplicationArea = Basic;

@@ -1,6 +1,9 @@
+namespace DalaDala.DalaDala;
 
-Page 50003 "Receipt Line"
+page 50012 "Fleet Management Lines"
 {
+    ApplicationArea = All;
+    Caption = 'Fleet Management Lines';
     PageType = ListPart;
     SourceTable = "Document Line";
 
@@ -13,7 +16,7 @@ Page 50003 "Receipt Line"
                 field(Type; Type)
                 {
                     ApplicationArea = Basic;
-                    TableRelation = "Payment & Receipt Types" where(Type = const(Receipt));
+                    TableRelation = "Payment & Receipt Types" where(Type = const("Fleet Mgt"));
                 }
                 field(AccountType; "Account Type")
                 {
@@ -22,6 +25,7 @@ Page 50003 "Receipt Line"
                 field("Member No."; "Member No.")
                 {
                     ApplicationArea = Basic;
+                    Caption = 'Vehicle No.';
                 }
                 field(AccountNo; "Account No.")
                 {
@@ -35,23 +39,13 @@ Page 50003 "Receipt Line"
                 {
                     ApplicationArea = Basic;
 
-
-                }
-                field("Principal Due"; "Principal Due")
-                {
-                    ApplicationArea = Basic;
-                }
-                field("Interest Due"; "Interest Due")
-                {
-                    ApplicationArea = Basic;
                 }
 
-                /*
                 field(TaxableAmount; "Taxable Amount")
                 {
                     ApplicationArea = Basic;
-                }*/
-                /*
+                }
+
                 field(TaxAmount; "Tax Amount")
                 {
                     ApplicationArea = Basic;
@@ -68,11 +62,11 @@ Page 50003 "Receipt Line"
                 {
                     ApplicationArea = Basic;
                 }
-            
+
                 field(NetAmount; "Net Amount")
                 {
                     ApplicationArea = Basic;
-                }*/
+                }
                 /*
                 field(AppliestoDocType;"Applies-to Doc. Type")
                 {
@@ -86,7 +80,7 @@ Page 50003 "Receipt Line"
                 {
                     ApplicationArea = Basic;
                 }
-                */
+                
                 field(ShortcutDimension1Code; "Shortcut Dimension 1 Code")
                 {
                     ApplicationArea = Basic;
@@ -111,4 +105,5 @@ Page 50003 "Receipt Line"
 
         ReceiptHeader: Record "Receipt Header";
 }
+
 

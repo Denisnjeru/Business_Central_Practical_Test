@@ -318,6 +318,11 @@ TableExtension 50000 tableextension52188416 extends "Sales & Receivables Setup"
             DataClassification = ToBeClassified;
             TableRelation = "No. Series";
         }
+        field(50063; "Fleet Mgt Nos."; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "No. Series";
+        }
 
 
 
