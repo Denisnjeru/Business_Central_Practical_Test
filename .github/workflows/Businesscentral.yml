@@ -5,7 +5,7 @@ on:
     branches: [Production]
 
   pull_request:
-    branches: [main, Production, staging]
+    branches: [Production]
 
 jobs:
   build:
