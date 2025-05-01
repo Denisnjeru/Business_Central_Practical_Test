@@ -1,3 +1,7 @@
+/// <summary>
+/// Table Payment Header (ID 50003).
+/// </summary>
+
 Table 50003 "Payment Header"
 {
     DrillDownPageID = "PV List";
@@ -894,9 +898,9 @@ Table 50003 "Payment Header"
     begin
         //FileName := FileMgt.OpenFileDialog(OpenExcelFile,FileName,ExcelFileFilter);
 
-        File.Upload(OpenExcelFile, FromFolder, ExcelFileFilter, FileName, ServerFileName);
+        //File.Upload(OpenExcelFile, FromFolder, ExcelFileFilter, FileName, ServerFileName);
 
-        if not File.Exists(ServerFileName) then exit;
+        //if not File.Exists(ServerFileName) then exit;
 
         //ServerFileName := FileMgt.UploadFileSilent(FileName);
 

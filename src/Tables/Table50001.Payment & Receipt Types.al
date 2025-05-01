@@ -1,4 +1,8 @@
 
+/// <summary>
+/// Table Payment & Receipt Types (ID 50001).
+/// </summary>
+
 Table 50001 "Payment & Receipt Types"
 {
     DrillDownPageID = "Payment & Receipt Types";

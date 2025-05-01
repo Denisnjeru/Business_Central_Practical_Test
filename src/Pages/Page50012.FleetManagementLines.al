@@ -38,9 +38,7 @@ page 50012 "Fleet Management Lines"
                 field(Amount; Amount)
                 {
                     ApplicationArea = Basic;
-
                 }
-
                 field(TaxableAmount; "Taxable Amount")
                 {
                     ApplicationArea = Basic;
