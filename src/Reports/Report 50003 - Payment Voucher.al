@@ -7,13 +7,11 @@ Report 50003 "Payment Voucher"
 
     dataset
     {
-        dataitem("Payments Header"; "Payment Header")
+        dataitem("Payments Header"; "Payments Header")
         {
             DataItemTableView = sorting("No.");
             RequestFilterFields = "No.";
-            column(ReportForNavId_6437; 6437)
-            {
-            }
+
             column(ChequeNo_PaymentsHeader; "Payments Header"."Cheque No.")
             {
             }
@@ -219,7 +217,7 @@ Report 50003 "Payment Voucher"
             column(CompanyInfoPic; CompanyInfo.Picture)
             {
             }
-            
+
             column(Bank; "Payments Header"."Paying Bank Account")
             {
                 IncludeCaption = true;
@@ -356,12 +354,6 @@ Report 50003 "Payment Voucher"
                 CheckReport.FormatNoText(NumberText, "Total Net Amount", '');
 
 
-                if "Payment Type" = "Payment Type"::Member then
-                    CheckReport.FormatNoText(NumberText, "Total Net Amount", '');
-                if "Payment Type" = "Payment Type"::Board then
-                    CheckReport.FormatNoText(NumberText, "Total Net Amount", '');
-                if "Payment Type" = "Payment Type"::Staff then
-                    CheckReport.FormatNoText(NumberText, "Total Net Amount", '');
                 if "Payments Header"."Creation Doc No." = '' then
                     CreationDoc := false
                 else

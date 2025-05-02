@@ -1,4 +1,8 @@
 
+/// <summary>
+/// Page Receipts List (ID 50001).
+/// </summary>
+
 Page 50001 "Receipts List"
 {
     ApplicationArea = Basic;
@@ -7,7 +11,7 @@ Page 50001 "Receipts List"
     Editable = false;
     PageType = List;
     SourceTable = "Receipt Header";
-    SourceTableView = where(Posted = const(false), "Customer Type" = filter(Member));
+    SourceTableView = where(Posted = const(false));
     UsageCategory = Lists;
 
     layout
@@ -20,31 +24,31 @@ Page 50001 "Receipts List"
                 {
                     ApplicationArea = Basic;
                 }
-                field(PostingDate; "Posting Date")
+                field(PostingDate; Rec."Posting Date")
                 {
                     ApplicationArea = Basic;
                 }
-                field(Cashier; Cashier)
+                field(Cashier; Rec.Cashier)
                 {
                     ApplicationArea = Basic;
                 }
-                field(DatePosted; "Date Posted")
+                field(DatePosted; Rec."Date Posted")
                 {
                     ApplicationArea = Basic;
                 }
-                field(Posted; Posted)
+                field(Posted; Rec.Posted)
                 {
                     ApplicationArea = Basic;
                 }
-                field(AmountRecieved; "Amount Recieved")
+                field(AmountRecieved; Rec."Amount Recieved")
                 {
                     ApplicationArea = Basic;
                 }
-                field("Cheque No."; "Cheque No.")
+                field("Cheque No."; Rec."Cheque No.")
                 {
                     ApplicationArea = Basic;
                 }
-                field("Cheque/Deposit Slip No"; "Cheque/Deposit Slip No")
+                field("Cheque/Deposit Slip No"; Rec."Cheque/Deposit Slip No")
                 {
                     ApplicationArea = Basic;
                 }
@@ -56,11 +60,11 @@ Page 50001 "Receipts List"
     actions
     {
     }
+
     trigger OnOPenPage()
-    var
-        myInt: Integer;
+
     begin
-        SetRange(Cashier, UserId);
+        Rec.SetRange(Cashier, UserId);
     end;
 }
 

@@ -1,3 +1,7 @@
+/// <summary>
+/// Report Bosa Receipting Report (ID 50001).
+/// </summary>
+
 report 50001 "Bosa Receipting Report"
 
 {
@@ -10,6 +14,7 @@ report 50001 "Bosa Receipting Report"
         dataitem("Receipt Header"; "Receipt Header")
         {
             RequestFilterFields = "No.";
+
             column(payrollandstaffNo; payrollandstaffNo)
             {
             }
@@ -131,7 +136,7 @@ report 50001 "Bosa Receipting Report"
                 column(ShortcutDimension2Code_DocumentLine; "Document Line"."Shortcut Dimension 2 Code")
                 {
                 }
-                
+
                 column(Type_DocumentLine; "Document Line".Type)
                 {
                 }

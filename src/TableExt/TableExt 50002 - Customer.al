@@ -1,10 +1,13 @@
 
+/// <summary>
+/// TableExtension tableextension52188404 (ID 50002) extends Record Customer.
+/// </summary>
+
 TableExtension 50002 tableextension52188404 extends Customer
 {
 
     fields
     {
-
         field(50088; "Employer Based Staff Nos"; Boolean)
         {
         }
@@ -30,27 +33,6 @@ TableExtension 50002 tableextension52188404 extends Customer
                 //TestNoEntriesExist(FIELDCAPTION("Account Type"));
             end;
         }
-
-        field(50096; "Remove Loan Restriction"; Boolean)
-        {
-            DataClassification = ToBeClassified;
-            trigger OnValidate()
-            var
-                UserSetup: Record "User setup";
-            begin
-                UserSetup.Reset();
-                UserSetup.SetRange("User ID", UserId);
-                UserSetup.SetRange("Credit Setups", true);
-                if not UserSetup.findfirst then
-                    error('You do not have the permission to update this setup');
-
-            end;
-        }
-
-   
-
-
-
     }
 
     fieldgroups

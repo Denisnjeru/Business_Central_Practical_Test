@@ -65,7 +65,7 @@ Table 50002 "Document Line"
                             GetVendorAccount;
                         "account type"::Employee:
                             GetEmployeeAccount;
-                        
+
                     end;
             end;
         }
@@ -167,7 +167,7 @@ Table 50002 "Document Line"
             DataClassification = ToBeClassified;
 
             trigger OnValidate()
-         
+
             begin
 
                 if ReceiptHeader.Get("Header No.") then begin
@@ -177,24 +177,13 @@ Table 50002 "Document Line"
 
                 end;
 
-
                 if PaymentHeader.Get("Header No.") then begin
                     "Shortcut Dimension 1 Code" := PaymentHeader."Global Dimension 1 Code";
                     "Shortcut Dimension 2 Code" := PaymentHeader."Shortcut Dimension 2 Code";
-
-                    if (PaymentHeader."Payment Type" = PaymentHeader."Payment Type"::Board) or (PaymentHeader."Payment Type" = PaymentHeader."Payment Type"::Member) or (PaymentHeader."Payment Type" = PaymentHeader."Payment Type"::Staff) then begin
-                        if PaymentHeader."Pay Mode" = PaymentHeader."Pay Mode"::Cash then
-                            TestField("Account Type", "Account Type"::"G/L Account");
-                     
-                    end;
                 end;
 
-
                 "Taxable Amount" := Amount;
-
-
-
-               UpdateAmounts;
+                UpdateAmounts;
             end;
         }
         field(18; "Currency Factor"; Decimal)
@@ -426,12 +415,12 @@ Table 50002 "Document Line"
                 UpdateAppliesToInvoiceNo;
             end;
         }
-      field(50052; "Member No."; Code[20])
+        field(50052; "Member No."; Code[20])
         {
             DataClassification = ToBeClassified;
             TableRelation = customer;
 
-            
+
         }
         field(50053; "Group Code"; Code[20])
         {
@@ -481,17 +470,17 @@ Table 50002 "Document Line"
                     "Account Type" := PmtType."Account Type";
                     Description := PmtType.Description;
                     Grouping := PmtType."Default Grouping";
-                    "VAT GL Account" := PmtType."VAT GL Account";
-                    "WTax GL Account" := PmtType."Tax GL Account";
-                    "Tax GL Account" := PmtType."Tax GL Account";
-                    "Account No." := PmtType."Account No.";
+                    // "VAT GL Account" := PmtType."VAT GL Account";
+                    // "WTax GL Account" := PmtType."Tax GL Account";
+                    // "Tax GL Account" := PmtType."Tax GL Account";
+                    // "Account No." := PmtType."Account No.";
                     if ReceiptHeader.Get("Header No.") then
                         "Posting Date" := ReceiptHeader."Posting Date";
                     "Member No." := ReceiptHeader."Customer No.";
 
                     if PmtType.Type = PmtType.Type::Receipt then begin
 
-                        
+
                         if PmtType."Account Type" = PmtType."Account Type"::Customer then begin
                             Validate("Account No.", ReceiptHeader."Customer No.");
                         end;
@@ -516,7 +505,7 @@ Table 50002 "Document Line"
              "G/L Account";
         }
 
-         field(50065; "Sales Invoice No"; Code[20])
+        field(50065; "Sales Invoice No"; Code[20])
         {
             DataClassification = ToBeClassified;
             TableRelation = "Sales Invoice Header" where("Sell-to Customer No." = field("Account No."), "Remaining Amount" = filter(> 0));
@@ -593,7 +582,7 @@ Table 50002 "Document Line"
 
     keys
     {
-        key(Key1; "Header No.", "Account Type", "Account No.",Type, "Line No.")
+        key(Key1; "Header No.", "Account Type", "Account No.", Type, "Line No.")
         {
             Clustered = true;
         }
@@ -647,9 +636,9 @@ Table 50002 "Document Line"
         Currency: Record Currency;
         CurrExchRate: Record "Currency Exchange Rate";
         CurrencyCode: Code[10];
-        PmtType: Record "Payment & Receipt Types";
+        PmtType: Record "Receipts and Payment Types";
         ReceiptHeader: Record "Receipt Header";
-        PaymentHeader: Record "Payment Header";
+        PaymentHeader: Record "Payments Header";
 
     local procedure GetGLAccount()
     var
@@ -687,12 +676,12 @@ Table 50002 "Document Line"
     begin
         Vend.Get("Account No.");
         Vend.CheckBlockedVendOnJnls(Vend, "Document Type", false);
-       
+
         if ReceiptHeader.Get("Header No.") then begin
             if Description = '' then
                 Description := StrSubstNo(Vend.Name + '-' + Format(ReceiptHeader."Pay Mode"));
         end;
-     
+
     end;
 
     local procedure GetEmployeeAccount()
@@ -1401,16 +1390,20 @@ Table 50002 "Document Line"
         if "Taxable Amount" > 0 then begin
 
             PmtType.Get(Type);
-            "VAT Amount" := ROUND(PmtType."VAT %" / 100 * "Taxable Amount", 1, '>');
-            "Withholding VAT" := ROUND(PmtType."Withholding VAT %" / 100 * "Taxable Amount", 1, '>');
-            "Tax Amount" := ROUND(PmtType."Tax %" / 100 * "Taxable Amount", 1, '>');
-            "Withholding Tax" := ROUND(PmtType."Withholding Tax %" / 100 * "Taxable Amount", 1, '>');
+            //"VAT Amount" := ROUND(PmtType."VAT %" / 100 * "Taxable Amount", 1, '>');
+            //"Withholding VAT" := ROUND(PmtType."Withholding VAT %" / 100 * "Taxable Amount", 1, '>');
+            //"Tax Amount" := ROUND(PmtType."Tax %" / 100 * "Taxable Amount", 1, '>');
+            //"Withholding Tax" := ROUND(PmtType."Withholding Tax %" / 100 * "Taxable Amount", 1, '>');
             "Net Amount" := Amount - "Withholding Tax" - "Withholding VAT" - "Tax Amount";
 
         end;
     end;
 
 
+    /// <summary>
+    /// GetNewLineNo.
+    /// </summary>
+    /// <returns>Return value of type Integer.</returns>
     procedure GetNewLineNo(): Integer
     var
         DocumentLine: Record "Document Line";
@@ -1424,27 +1417,18 @@ Table 50002 "Document Line"
           EXIT(DocumentLine."Line No." + 10000);
         EXIT(10000);
         */
-
     end;
 
 
     trigger OnModify()
-    var
-        myInt: Integer;
     begin
-
-        if ReceiptHeader.Get("Header No.") then begin
+        if ReceiptHeader.Get("Header No.") then
             ReceiptHeader.TestField(Status, ReceiptHeader.Status::Open);
-        end;
     end;
 
     trigger OnDelete()
-    var
-        myInt: Integer;
     begin
-
-        if ReceiptHeader.Get("Header No.") then begin
+        if ReceiptHeader.Get("Header No.") then
             ReceiptHeader.TestField(Status, ReceiptHeader.Status::Open);
-        end;
     end;
 }

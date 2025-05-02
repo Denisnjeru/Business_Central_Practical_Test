@@ -1,3 +1,7 @@
+/// <summary>
+/// Report Payments Report (ID 50002).
+/// </summary>
+
 report 50002 "Payments Report"
 {
     ApplicationArea = All;
@@ -7,7 +11,7 @@ report 50002 "Payments Report"
     RDLCLayout = './Layouts/Payments Report.rdlc';
     dataset
     {
-        dataitem(PaymentHeader; "Payment Header")
+        dataitem(PaymentHeader; "Payments Header")
         {
             DataItemTableView = where(Posted = const(true));
 

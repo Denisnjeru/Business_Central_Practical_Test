@@ -12,6 +12,19 @@ using Microsoft.Purchases.Document;
 using Microsoft.Purchases.Vendor;
 using Microsoft.Sales.Reports;
 using Microsoft.Sales.History;
+using System.Environment;
+using Microsoft.Inventory.Item;
+using System.Visualization;
+using Microsoft.Finance.RoleCenters;
+using Microsoft.Intercompany;
+using Microsoft.Foundation.Task;
+using System.Email;
+using System.Automation;
+using Microsoft.RoleCenters;
+using Microsoft.Sales.Analysis;
+using System.Threading;
+using Microsoft.CashFlow.Forecast;
+using Microsoft.EServices.EDocument;
 using Microsoft.Sales.Document;
 using Microsoft.Sales.Customer;
 using Microsoft.Bank.Reconciliation;
@@ -28,12 +41,70 @@ page 50000 "Finance Management"
     {
         area(rolecenter)
         {
-
-            systempart(MyNotes; MyNotes)
+            part(Control76; "Headline RC Accountant")
             {
                 ApplicationArea = Basic, Suite;
-                visible = true;
-                ;
+            }
+            part(Control99; "Finance Performance")
+            {
+                ApplicationArea = Basic, Suite;
+                Visible = false;
+            }
+            part(Control1902304208; "Accountant Activities")
+            {
+                ApplicationArea = Basic, Suite;
+            }
+            part("Intercompany Activities"; "Intercompany Activities")
+            {
+                ApplicationArea = Intercompany;
+            }
+            part("User Tasks Activities"; "User Tasks Activities")
+            {
+                ApplicationArea = Suite;
+            }
+            part("Emails"; "Email Activities")
+            {
+                ApplicationArea = Basic, Suite;
+            }
+            part(ApprovalsActivities; "Approvals Activities")
+            {
+                ApplicationArea = Suite;
+            }
+            part(Control123; "Team Member Activities")
+            {
+                ApplicationArea = Suite;
+            }
+            part(Control1907692008; "My Accounts")
+            {
+                ApplicationArea = Basic, Suite;
+            }
+            part(Control103; "Trailing Sales Orders Chart")
+            {
+                ApplicationArea = Basic, Suite;
+                Visible = false;
+            }
+            part(Control106; "My Job Queue")
+            {
+                ApplicationArea = Basic, Suite;
+                Visible = false;
+            }
+            part(Control9; "Help And Chart Wrapper")
+            {
+                ApplicationArea = Basic, Suite;
+            }
+            part(Control100; "Cash Flow Forecast Chart")
+            {
+                ApplicationArea = Basic, Suite;
+            }
+            part(Control108; "Report Inbox Part")
+            {
+                AccessByPermission = TableData "Report Inbox" = IMD;
+                ApplicationArea = Basic, Suite;
+            }
+
+            systempart(Control1901377608; MyNotes)
+            {
+                ApplicationArea = Basic, Suite;
             }
         }
     }
@@ -97,9 +168,6 @@ page 50000 "Finance Management"
                         RunObject = Page "Account Schedule Names";
                     }
 
-
-
-
                 }
                 //FINish
                 group(CashManagement)
@@ -110,7 +178,7 @@ page 50000 "Finance Management"
                     {
                         ApplicationArea = RelationshipMgmt;
                         Caption = 'Bank Account List';
-                        Image = "Order";
+                        Image = Bank;
 
 
                         RunObject = Page "Bank Account List";
@@ -334,9 +402,7 @@ page 50000 "Finance Management"
                         RunObject = Report "Fixed Asset Register";
                         Caption = 'Fixed Asset List';
                     }
-
                 }
-
 
                 group(FixedAssetsReports)
                 {
@@ -367,18 +433,11 @@ page 50000 "Finance Management"
 
                 }
 
-
             }
 
-
-
-
-
-            group(Action57)//FUNDS MANAGEMENT
+            group(Action57)
             {
                 Caption = 'Funds Management';
-
-
                 group(Receipts)
                 {
                     Caption = 'Receipts';
@@ -388,16 +447,12 @@ page 50000 "Finance Management"
                         ApplicationArea = RelationshipMgmt;
                         Caption = 'Receipts List';
                         Image = CustomerContact;
-
-
                         RunObject = Page "Receipts List";
                     }
                     action("Posted Receipts")
                     {
                         ApplicationArea = RelationshipMgmt;
                         Caption = 'Posted Receipts';
-
-
                         RunObject = Page "Posted Receipts List";
                     }
                     action("Receipts - report")
@@ -405,8 +460,6 @@ page 50000 "Finance Management"
                         ApplicationArea = RelationshipMgmt;
                         Caption = 'Receipts Report';
                         Image = Receipt;
-
-
                         RunObject = Report Receipt;
                     }
                 }
@@ -419,139 +472,55 @@ page 50000 "Finance Management"
                         ApplicationArea = RelationshipMgmt;
                         Caption = 'Payment Voucher';
                         Image = CustomerContact;
-
-
-                        RunObject = Page "PV List";
+                        RunObject = Page "Payment Vouchers List";
                     }
 
-                    action(PettyCash)
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Petty Cash';
-                        Image = CustomerContact;
-
-
-                        //RunObject = Page "Petty Cash List";
-                    }
-
-
-                    action("PaymentVouchers")
+                    action(PostedPaymentsVouchers)
                     {
                         ApplicationArea = RelationshipMgmt;
                         Caption = 'Posted Payment Voucher';
-
-
-                        RunObject = Page "PV Posted List";
-                    }
-
-                    action(PostedPettyCash)
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Posted Petty Cash';
                         Image = CustomerContact;
-
-
-                        //RunObject = Page "Posted Petty Cash List";
+                        RunObject = Page "Posted Payment Vouchers List";
                     }
 
                     action("Payments Report")
                     {
                         ApplicationArea = RelationshipMgmt;
-                        RunObject = rEPORT "Payments Report";
-                    }
-                }
-
-                group(Imprest)
-                {
-                    Caption = 'Imprest';
-
-                    action("Imprest Requisition List")
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Imprest Requisition List';
-                        Image = "Order";
-
-
-                        //RunObject = Page "Imprest Requisition List";
-                    }
-                    action("Posted Imprest Requisition List")
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Posted Imprest Requisition List';
-                        Image = "Order";
-
-
-                        //RunObject = Page "Posted Imprest Requisition";
-                    }
-                    action("Imprest Surrender List")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'Imprest Surrender List';
-                        Image = Reminder;
-
-
-                        // RunObject = Page "Imprest Surrender List";
-                    }
-                    action("Posted Imprest Surrender List")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'Posted Imprest Surrender List';
-                        Image = Reminder;
-
-
-                        //RunObject = Page "Posted Imprest Surrender List";
-                    }
-
-                }
-                group(BankTransfers)
-                {
-                    Caption = 'Bank Transfers';
-
-                    action("IBT")
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Inter-Bank Transfers List';
-                        Image = "Order";
-
-
-                        // RunObject = Page "IBT List";
-                    }
-
-                    action("PostedIBT")
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Posted Inter-Bank Transfers List';
-                        Image = "Order";
-
-
-                        //RunObject = Page "Posted Inter Bank Transfers";
+                        RunObject = Report "Payments Report";
                     }
                 }
             }
 
+            group(Action58)// Inventory Management
 
-            group(Action4)
             {
-                Caption = 'Management';
-
+                Caption = 'Inventory Management';
+                action(ITM001)
+                {
+                    ApplicationArea = RelationshipMgmt;
+                    Caption = 'Items';
+                    Image = "Order";
+                    RunObject = page "Item List";
+                }
             }
+            group(Action59)
+            {
+                Caption = 'Fleet Management';
+                action(Fleet001)
+                {
+                    ApplicationArea = RelationshipMgmt;
+                    Caption = 'Fleet Management';
+                    Image = "Order";
+                    //RunObject = page "Fleet Management List";
+                }
+            }
+
 
 
         }
 
         area(processing)
         {
-
-
-
-
-
-
-
         }
-
-
     }
-
-
 }
