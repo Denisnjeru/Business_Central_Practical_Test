@@ -1,5 +1,9 @@
 
-TableExtension 50000 tableextension52188416 extends "Sales & Receivables Setup"
+/// <summary>
+/// TableExtension Sales & Receivables SetupExt (ID 50000) extends Record Sales & Receivables Setup.
+/// </summary>
+
+TableExtension 50000 "Sales & Receivables SetupExt" extends "Sales & Receivables Setup"
 {
     fields
     {
@@ -324,8 +328,20 @@ TableExtension 50000 tableextension52188416 extends "Sales & Receivables Setup"
             TableRelation = "No. Series";
         }
 
-
-
+        field(50064; "Petty Cash Payments No"; Code[10])
+        {
+            Caption = 'Petty Cash Payments No';
+            TableRelation = "No. Series";
+        }
+        field(50066; "Normal Payments No"; Code[10])
+        {
+            Caption = 'Payment Nos';
+            TableRelation = "No. Series";
+        }
+        field(50067; "Cash Purchases"; Code[20])
+        {
+            TableRelation = "No. Series";
+        }
 
     }
 }

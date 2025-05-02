@@ -1230,9 +1230,9 @@ table 50006 "Payment Line"
     begin
 
         if No = '' then begin
-            GenLedgerSetup.Get;
-            GenLedgerSetup.TestField(GenLedgerSetup."Normal Payments No");
-            NoSeriesMgt.InitSeries(GenLedgerSetup."Normal Payments No", xRec."No. Series", 0D, No, "No. Series");
+            SaleReceivablesSetup.Get;
+            SaleReceivablesSetup.TestField(SaleReceivablesSetup."Normal Payments No");
+            NoSeriesMgt.InitSeries(SaleReceivablesSetup."Normal Payments No", xRec."No. Series", 0D, No, "No. Series");
         end;
 
         PHead.Reset;
@@ -1281,9 +1281,8 @@ table 50006 "Payment Line"
         FA: Record "Fixed Asset";
         BankAcc: Record "Bank Account";
         NoSeriesMgt: Codeunit NoSeriesManagement;
-        GenLedgerSetup: Record "Cash Office Setup";
+        SaleReceivablesSetup: Record "Sales & Receivables Setup";
         RecPayTypes: Record "Receipts and Payment Types";
-        CashierLinks: Record "Cash Office User Template";
         GLAccount: Record "G/L Account";
         EntryNo: Integer;
         SingleMonth: Boolean;

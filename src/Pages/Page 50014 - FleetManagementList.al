@@ -1,6 +1,6 @@
 namespace DalaDala.DalaDala;
 
-page 50013 "Fleet Management List"
+page 50014 "Fleet Management List"
 {
     ApplicationArea = All;
     Caption = 'Fleet Management List';

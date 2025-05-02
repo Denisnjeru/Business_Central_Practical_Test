@@ -436,6 +436,7 @@ Page 50002 "Receipt Card"
             {
                 ApplicationArea = Basic;
                 Image = Post;
+                Enabled = (not Rec.Posted);
                 Promoted = true;
                 PromotedCategory = Category4;
                 PromotedIsBig = true;
@@ -495,9 +496,6 @@ Page 50002 "Receipt Card"
                     ReceiptHeader.Reset;
                     ReceiptHeader.SetRange("No.", Rec."No.");
                     if ReceiptHeader.FindFirst then begin
-
-                        if Rec."Customer Type" = Rec."Customer Type"::Member then
-                            Report.Run(52188743, true, false, ReceiptHeader);
 
                         if Rec."Customer Type" = Rec."Customer Type"::Customer then
                             Report.Run(52188442, true, false, ReceiptHeader);

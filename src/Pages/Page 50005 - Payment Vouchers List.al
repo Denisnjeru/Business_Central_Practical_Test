@@ -13,8 +13,7 @@ Page 50005 "Payment Vouchers List"
     PageType = List;
     PromotedActionCategories = 'New,Process,Reports,Approval,Budgetary Control,Category6_caption,Category7_caption,Category8_caption,Category9_caption,Category10_caption';
     SourceTable = "Payments Header";
-    SourceTableView = WHERE("Payment Type" = CONST(Normal),
-                            Posted = CONST(false));
+    SourceTableView = WHERE(Posted = CONST(false));
 
     layout
     {
@@ -110,7 +109,7 @@ Page 50005 "Payment Vouchers List"
 
                     trigger OnAction()
                     begin
-                        //Post PV Entries
+                        // Post PV Entries
                         CurrPage.SaveRecord;
                         CheckPVRequiredItems(Rec);
                         PostPaymentVoucher(Rec);
@@ -297,42 +296,10 @@ Page 50005 "Payment Vouchers List"
 
     trigger OnInit()
     begin
-
-        /*
-        StatusChangePermissions.Reset;
-        StatusChangePermissions.SetRange("User ID", UserId);
-        StatusChangePermissions.SetRange("General PV", true);
-        if not StatusChangePermissions.FindFirst then
-            Error('You do not have the following Status Change Permission: "General PV". Contact the System Administrator for Assistance');*/
     end;
 
     trigger OnOpenPage()
     begin
-        /*
-        IF UserMgt.GetPurchasesFilter() <> '' THEN BEGIN
-          FILTERGROUP(2);
-          SETRANGE("Responsibility Center" ,UserMgt.GetPurchasesFilter());
-          FILTERGROUP(0);
-        END;
-        */
-
-        /*
-        IF UserMgt.GetSetDimensions(USERID,2) <> '' THEN BEGIN
-          FILTERGROUP(2);
-          SETRANGE("Shortcut Dimension 2 Code",UserMgt.GetSetDimensions(USERID,2));
-          FILTERGROUP(0);
-        END;
-        */
-
-        /*
-        FILTERGROUP(2);
-        SETRANGE(Cashier,USERID);
-        FILTERGROUP(0);
-         */
-
-        USetup.Get(UserId);
-        Rec.SetRange("Shortcut Dimension 2 Code", USetup."Global Dimension 2 Code");
-
     end;
 
     var
@@ -340,7 +307,6 @@ Page 50005 "Payment Vouchers List"
         Text000: Label 'Do you want to Void Check No %1';
         Text002: Label 'You have selected post and generate a computer cheque ensure that your cheque printer is ready do you want to continue?';
         PayLine: Record "Payment Line";
-        //PVUsers: Record "W/P Budget Buffer";
         strFilter: Text[250];
         IntC: Integer;
         IntCount: Integer;
@@ -400,6 +366,10 @@ Page 50005 "Payment Vouchers List"
         Bank: Record "Bank Account";
         USetup: Record "User Setup";
 
+    /// <summary>
+    /// PostPaymentVoucher.
+    /// </summary>
+    /// <param name="Rec">Record "Payments Header".</param>
     procedure PostPaymentVoucher(Rec: Record "Payments Header")
     begin
 

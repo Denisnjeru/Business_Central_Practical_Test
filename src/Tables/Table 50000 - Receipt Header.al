@@ -131,7 +131,6 @@ Table 50000 "Receipt Header"
         field(38; "Total Amount"; Decimal)
         {
             CalcFormula = sum("Document Line".Amount where("Header No." = field("No.")));
-            Editable = false;
             FieldClass = FlowField;
         }
         field(39; "Posted By"; Code[50])
@@ -428,7 +427,7 @@ Table 50000 "Receipt Header"
         {
             Caption = 'Type';
             DataClassification = ToBeClassified;
-            OptionMembers = Member,Customer,"G/L Account";
+            OptionMembers = Customer,"G/L Account";
 
             trigger OnValidate()
             begin
@@ -477,23 +476,14 @@ Table 50000 "Receipt Header"
 
         if "No." = '' then begin
             SalesSetup.Get;
-            if "Customer Type" = "Customer Type"::Member then begin
-                SalesSetup.TestField("Receipts Nos.");
-                "No. Series" := SalesSetup."Receipts Nos.";
-                if NoSeriesMgt.AreRelated(SalesSetup."Receipts Nos.", xRec."No. Series") then
+            if ("Customer Type" = "Customer Type"::Customer) or ("Customer Type" = "Customer Type"::"G/L Account") then begin
+                SalesSetup.TestField("Cust Receipts Nos.");
+                "No. Series" := SalesSetup."Cust Receipts Nos.";
+                if NoSeriesMgt.AreRelated(SalesSetup."Cust Receipts Nos.", xRec."No. Series") then
                     "No. Series" := xRec."No. Series";
                 "No." := NoSeriesMgt.GetNextNo("No. Series");
-            end
-            else begin
-                SalesSetup.Get;
-                if ("Customer Type" = "Customer Type"::Customer) or ("Customer Type" = "Customer Type"::"G/L Account") then begin
-                    SalesSetup.TestField("Cust Receipts Nos.");
-                    "No. Series" := SalesSetup."Cust Receipts Nos.";
-                    if NoSeriesMgt.AreRelated(SalesSetup."Cust Receipts Nos.", xRec."No. Series") then
-                        "No. Series" := xRec."No. Series";
-                    "No." := NoSeriesMgt.GetNextNo("No. Series");
-                end;
-            end
+            end;
+
         end;
 
         UserTemplate.Get(UserId);

@@ -964,7 +964,7 @@ Page 50006 "Payment Voucher Card"
         GenJnlLine."External Document No." := Payments."Cheque No.";
         GenJnlLine."Document No." := Payments."No.";
 #pragma warning disable AL0603
-        GenJnlLine."Account Type" := Payments."Account Type";
+        GenJnlLine."Account Type" := Payments."Paying Account Type";
 #pragma warning restore AL0603
         GenJnlLine."Account No." := Payments."Paying Bank Account";
         GenJnlLine.Validate(GenJnlLine."Account No.");

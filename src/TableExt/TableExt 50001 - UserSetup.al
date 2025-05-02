@@ -1,4 +1,8 @@
-tableextension 50001 UserSetupExt extends "User Setup"
+/// <summary>
+/// TableExtension UserSetupExts (ID 50001) extends Record User Setup.
+/// </summary>
+
+tableextension 50001 UserSetupExts extends "User Setup"
 {
     fields
     {
@@ -28,19 +32,6 @@ tableextension 50001 UserSetupExt extends "User Setup"
             DataClassification = ToBeClassified;
             TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("CashRec Journal Template"));
 
-            trigger OnValidate()
-            begin
-                UserTemp.Reset;
-                UserTemp.SetRange("CashRec Journal Template", "CashRec Journal Template");
-                UserTemp.SetRange("CashRec Journal Batch", "CashRec Journal Batch");
-                if UserTemp.FindFirst then begin
-                    repeat
-                        if (UserTemp."User ID" <> Rec."User ID") and ("CashRec Journal Batch" <> '') then begin
-                            Error('Please note that another user has been assigned the same batch.');
-                        end;
-                    until UserTemp.Next = 0;
-                end;
-            end;
         }
         field(50054; "Payment Journal Template"; Code[10])
         {
@@ -52,19 +43,6 @@ tableextension 50001 UserSetupExt extends "User Setup"
             DataClassification = ToBeClassified;
             TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("Payment Journal Template"));
 
-            trigger OnValidate()
-            begin
-                UserTemp.Reset;
-                UserTemp.SetRange("Payment Journal Template", "Payment Journal Template");
-                UserTemp.SetRange("Payment Journal Batch", "Payment Journal Batch");
-                if UserTemp.FindFirst then begin
-                    repeat
-                        if (UserTemp."User ID" <> Rec."User ID") and ("Payment Journal Batch" <> '') then begin
-                            Error('Please note that another user has been assigned the same batch.');
-                        end;
-                    until UserTemp.Next = 0;
-                end;
-            end;
         }
         field(50056; "General Journal Template"; Code[10])
         {
@@ -75,20 +53,6 @@ tableextension 50001 UserSetupExt extends "User Setup"
         {
             DataClassification = ToBeClassified;
             TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("General Journal Template"));
-
-            trigger OnValidate()
-            begin
-                UserTemp.Reset;
-                UserTemp.SetRange("General Journal Template", "General Journal Template");
-                UserTemp.SetRange("General Journal Batch", "General Journal Batch");
-                if UserTemp.FindFirst then begin
-                    repeat
-                        if (UserTemp."User ID" <> Rec."User ID") and ("General Journal Batch" <> '') then begin
-                            Error('Please note that another user has been assigned the same batch.');
-                        end;
-                    until UserTemp.Next = 0;
-                end;
-            end;
         }
         field(50058; "Max. Open Documents"; Integer)
         {
@@ -117,24 +81,11 @@ tableextension 50001 UserSetupExt extends "User Setup"
         {
             DataClassification = ToBeClassified;
         }
-       
+
         field(50065; "Imprest Account"; Code[20])
         {
             DataClassification = ToBeClassified;
             TableRelation = Customer where("Account Type" = const("Staff Advance"));
-
-            trigger OnValidate()
-            begin
-                UserTemp.Reset;
-                UserTemp.SetRange("Imprest Account", "Imprest Account");
-                if UserTemp.FindFirst then begin
-                    repeat
-                        if (UserTemp."User ID" <> Rec."User ID") then begin
-                            Error('Please note that another user has been assigned this imprest account.');
-                        end;
-                    until UserTemp.Next = 0;
-                end;
-            end;
         }
         field(50066; "Staff No"; Code[20])
         {
@@ -176,9 +127,6 @@ tableextension 50001 UserSetupExt extends "User Setup"
         {
             DataClassification = ToBeClassified;
         }
-
-
-
         field(50076; "Credit Setups"; Boolean)
         {
             DataClassification = ToBeClassified;
@@ -232,7 +180,7 @@ tableextension 50001 UserSetupExt extends "User Setup"
         {
             DataClassification = ToBeClassified;
         }
-       
+
         field(50088; "Reset File Movement"; Boolean)
         {
             DataClassification = ToBeClassified;

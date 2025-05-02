@@ -3,7 +3,7 @@
 /// TableExtension tableextension52188404 (ID 50002) extends Record Customer.
 /// </summary>
 
-TableExtension 50002 tableextension52188404 extends Customer
+TableExtension 50002 Customers extends Customer
 {
 
     fields

@@ -1,4 +1,4 @@
-table 50004 "Fleet Management Header"
+table 50008 "Fleet Management Header"
 {
     Caption = 'Fleet Management Header';
     DataClassification = ToBeClassified;
@@ -385,18 +385,14 @@ table 50004 "Fleet Management Header"
         {
             DataClassification = ToBeClassified;
         }
-        //HERE
         field(50056; payrollandstaffNo; Code[100])
         {
             DataClassification = ToBeClassified;
         }
-        //HERE
         field(50057; "Date Created"; Date)
         {
             DataClassification = ToBeClassified;
         }
-
-
     }
 
     keys

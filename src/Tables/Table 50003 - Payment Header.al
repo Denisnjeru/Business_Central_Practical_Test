@@ -14,8 +14,8 @@ Table 50003 "Payments Header"
             trigger OnValidate()
             begin
                 if "No." <> xRec."No." then begin
-                    GenLedgerSetup.Get;
-                    NoSeriesMgt.TestManual(GenLedgerSetup."Normal Payments No");
+                    SalesReceivablesSetup.Get;
+                    NoSeriesMgt.TestManual(SalesReceivablesSetup."Normal Payments No");
                     "No. Series" := '';
                 end;
             end;
@@ -283,11 +283,19 @@ Table 50003 "Payments Header"
             trigger OnValidate()
             begin
                 case "Pay Mode" of
-
                     "Pay Mode"::Cheque:
                         begin
                             "Account Type" := "Account Type"::"Bank Account";
                         end;
+
+                    "Pay Mode"::Cash:
+                        begin
+                            "Account Type" := "Account Type"::"Bank Account";
+                        end;
+
+                    else begin
+                        "Account Type" := "Account Type"::"Bank Account";
+                    end;
                 end;
             end;
         }
@@ -614,8 +622,8 @@ Table 50003 "Payments Header"
 
     trigger OnDelete()
     begin
-        //IF (Status=Status::Approved) OR (Status=Status::Posted) OR (Status=Status::"Pending Approval")THEN
-        //     ERROR('You Cannot Delete this record');
+        IF (Status = Status::Posted) THEN
+            ERROR('You Cannot Delete this record');
     end;
 
     trigger OnInsert()
@@ -625,33 +633,33 @@ Table 50003 "Payments Header"
         //MESSAGE('%1',"Payment Type");
 
         if "No." = '' then begin
-            GenLedgerSetup.Get;
+            SalesReceivablesSetup.Get;
 
             if "Payment Type" = "Payment Type"::Normal then begin
-                GenLedgerSetup.TestField(GenLedgerSetup."Normal Payments No");
-                NoSeriesMgt.InitSeries(GenLedgerSetup."Normal Payments No", xRec."No. Series", 0D, "No.", "No. Series");
+                SalesReceivablesSetup.TestField(SalesReceivablesSetup."Normal Payments No");
+                NoSeriesMgt.InitSeries(SalesReceivablesSetup."Normal Payments No", xRec."No. Series", 0D, "No.", "No. Series");
                 UserTemp.Get(UserId);
+
                 //UserTemp.TestField("Responsibility Centre");
                 //UserTemp.TestField("Global Dimension 1 Code");
                 //UserTemp.TestField("Global Dimension 2 Code");
 
                 "Global Dimension 1 Code" := UserTemp."Global Dimension 1 Code";
                 "Shortcut Dimension 2 Code" := UserTemp."Global Dimension 2 Code";
-
             end
             else
                 if "Payment Type" = "Payment Type"::Express then begin
-                    GenLedgerSetup.TestField(GenLedgerSetup."Board PVs Nos.");
-                    NoSeriesMgt.InitSeries(GenLedgerSetup."Board PVs Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+                    SalesReceivablesSetup.TestField(SalesReceivablesSetup."Board PVs Nos.");
+                    NoSeriesMgt.InitSeries(SalesReceivablesSetup."Board PVs Nos.", xRec."No. Series", 0D, "No.", "No. Series");
                 end
                 else
                     if "Payment Type" = "Payment Type"::"Cash Purchase" then begin
-                        GenLedgerSetup.TestField(GenLedgerSetup."Cash Purchases");
-                        NoSeriesMgt.InitSeries(GenLedgerSetup."Cash Purchases", xRec."No. Series", 0D, "No.", "No. Series");
+                        SalesReceivablesSetup.TestField(SalesReceivablesSetup."Cash Purchases");
+                        NoSeriesMgt.InitSeries(SalesReceivablesSetup."Cash Purchases", xRec."No. Series", 0D, "No.", "No. Series");
                     end else
                         if "Payment Type" = "Payment Type"::"Benevolent Claim" then begin
-                            //GenLedgerSetup.TestField("Benevolent Claim Nos");
-                            NoSeriesMgt.InitSeries(GenLedgerSetup."Benevolent Claim Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                            //SalesReceivablesSetup.TestField("Benevolent Claim Nos");
+                            NoSeriesMgt.InitSeries(SalesReceivablesSetup."Benevolent Claim Nos", xRec."No. Series", 0D, "No.", "No. Series");
 
                             UserTemp.Get(UserId);
                             //UserTemp.TestField("Responsibility Centre");
@@ -667,8 +675,8 @@ Table 50003 "Payments Header"
 
 
                         end else begin
-                            GenLedgerSetup.TestField(GenLedgerSetup."Petty Cash Payments No");
-                            NoSeriesMgt.InitSeries(GenLedgerSetup."Petty Cash Payments No", xRec."No. Series", 0D, "No.", "No. Series");
+                            SalesReceivablesSetup.TestField(SalesReceivablesSetup."Petty Cash Payments No");
+                            NoSeriesMgt.InitSeries(SalesReceivablesSetup."Petty Cash Payments No", xRec."No. Series", 0D, "No.", "No. Series");
                         end;
 
         end;
@@ -726,7 +734,6 @@ Table 50003 "Payments Header"
 
     var
         CStatus: Code[20];
-        // PVUsers: Record "W/P Budget Buffer";
         UserTemplate: Record "Cash Office User Template";
         GLAcc: Record "G/L Account";
         Cust: Record Customer;
@@ -734,7 +741,7 @@ Table 50003 "Payments Header"
         FA: Record "Fixed Asset";
         BankAcc: Record "Bank Account";
         NoSeriesMgt: Codeunit NoSeriesManagement;
-        GenLedgerSetup: Record "Cash Office Setup";
+        SalesReceivablesSetup: Record "Sales & Receivables Setup";
         RecPayTypes: Record "Receipts and Payment Types";
         GLAccount: Record "G/L Account";
         EntryNo: Integer;
@@ -820,12 +827,12 @@ Table 50003 "Payments Header"
     local procedure TestNoSeries(): Boolean
     begin
         if "Payment Type" = "Payment Type"::"Petty Cash" then
-            GenLedgerSetup.TestField(GenLedgerSetup."Petty Cash Payments No")
+            SalesReceivablesSetup.TestField(SalesReceivablesSetup."Petty Cash Payments No")
         else
             if "Payment Type" = "Payment Type"::Express then
-                GenLedgerSetup.TestField(GenLedgerSetup."Board PVs Nos.")
+                SalesReceivablesSetup.TestField(SalesReceivablesSetup."Board PVs Nos.")
             else
-                GenLedgerSetup.TestField(GenLedgerSetup."Normal Payments No");
+                SalesReceivablesSetup.TestField(SalesReceivablesSetup."Normal Payments No");
     end;
 
     local procedure GetNoSeriesCode(): Code[10]
@@ -833,12 +840,12 @@ Table 50003 "Payments Header"
         NoSeriesCode: Code[20];
     begin
         if "Payment Type" = "Payment Type"::"Petty Cash" then
-            NoSeriesCode := GenLedgerSetup."Petty Cash Payments No"
+            NoSeriesCode := SalesReceivablesSetup."Petty Cash Payments No"
         else
             if "Payment Type" = "Payment Type"::Express then
-                NoSeriesCode := GenLedgerSetup."Board PVs Nos."
+                NoSeriesCode := SalesReceivablesSetup."Board PVs Nos."
             else
-                NoSeriesCode := GenLedgerSetup."Normal Payments No";
+                NoSeriesCode := SalesReceivablesSetup."Normal Payments No";
 
         exit(GetNoSeriesRelCode(NoSeriesCode));
     end;
@@ -890,11 +897,6 @@ Table 50003 "Payments Header"
     /// <param name="NoSeriesCode">Code[20].</param>
     /// <returns>Return value of type Code[10].</returns>
     procedure GetNoSeriesRelCode(NoSeriesCode: Code[20]): Code[10]
-    var
-        GenLedgerSetup: Record "General Ledger Setup";
-        RespCenter: Record "Responsibility Center";
-        DimMgt: Codeunit DimensionManagement;
-        NoSrsRel: Record "No. Series Relationship";
     begin
     end;
 }

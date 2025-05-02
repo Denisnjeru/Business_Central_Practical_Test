@@ -438,6 +438,7 @@ page 50000 "Finance Management"
             group(Action57)
             {
                 Caption = 'Funds Management';
+
                 group(Receipts)
                 {
                     Caption = 'Receipts';
@@ -489,54 +490,56 @@ page 50000 "Finance Management"
                         RunObject = Report "Payments Report";
                     }
                 }
+                group(Setup)
+                {
+                    Caption = 'Setup';
+
+                    action(FundsSetup)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Sales & Receivables Setup';
+                        Image = CustomerContact;
+                        RunObject = Page 459;
+                    }
+                    action(ReceiptPaymentTypesList)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Receipt and Payment Types List';
+                        RunObject = Page "Receipt and Payment Types List";
+                    }
+                    action(CashOfficeUserTemplate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Cash Office User Template';
+                        RunObject = Page "Cash Office User Template";
+                    }
+                }
+
             }
 
-            group(Action58)// Inventory Management
-
+            group(Action588)
             {
                 Caption = 'Inventory Management';
-                action(ITM001)
+
+                action(ITM0001)
                 {
                     ApplicationArea = RelationshipMgmt;
                     Caption = 'Items';
                     Image = "Order";
                     RunObject = page "Item List";
                 }
-            }
-<<<<<<< HEAD:src/Pages/Page50000.FinanceManagement.al
-
-            group(Action58)// Inventory Management
-
-            {
-                Caption = 'Inventory Management';
-                action(ITM001)
-                {
-                    ApplicationArea = RelationshipMgmt;
-                    Caption = 'Items';
-                    Image = "Order";
-                    RunObject = page "Item List";
-                }
-
-
 
             }
+
             group(Action59)
             {
-=======
-            group(Action59)
-            {
->>>>>>> Production:src/Pages/Page 50000 - FinanceManagement.al
                 Caption = 'Fleet Management';
                 action(Fleet001)
                 {
                     ApplicationArea = RelationshipMgmt;
                     Caption = 'Fleet Management';
                     Image = "Order";
-<<<<<<< HEAD:src/Pages/Page50000.FinanceManagement.al
                     RunObject = page "Fleet Management List";
-=======
-                    //RunObject = page "Fleet Management List";
->>>>>>> Production:src/Pages/Page 50000 - FinanceManagement.al
                 }
             }
 

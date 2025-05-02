@@ -12,19 +12,11 @@ table 50004 "Cash Office Setup"
         field(1; "Primary Key"; Code[10])
         {
         }
-        field(50001; "Normal Payments No"; Code[10])
-        {
-            Caption = 'Payment Nos';
-            TableRelation = "No. Series";
-        }
+
         field(50002; "Cheque Reject Period"; DateFormula)
         {
         }
-        field(50003; "Petty Cash Payments No"; Code[10])
-        {
-            Caption = 'Petty Cash Payments No';
-            TableRelation = "No. Series";
-        }
+
         field(50004; "Current Budget"; Code[20])
         {
             TableRelation = "G/L Budget Name".Name;
@@ -203,11 +195,7 @@ table 50004 "Cash Office Setup"
         field(50054; "Use Central Payment System"; Boolean)
         {
         }
-        field(50060; "Board PVs Nos."; Code[20])
-        {
-            Caption = 'Board PVs Nos.';
-            TableRelation = "No. Series";
-        }
+
         field(50061; "Journal Voucher Nos"; Code[20])
         {
             TableRelation = "No. Series";

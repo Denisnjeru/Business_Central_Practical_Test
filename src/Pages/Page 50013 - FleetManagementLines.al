@@ -1,20 +1,11 @@
+namespace DalaDala.DalaDala;
 
-/// <summary>
-/// Page Posted Receipts List (ID 50007).
-/// </summary>
-
-Page 50007 "Posted Receipts List"
+page 50013 "Fleet Management Lines"
 {
-    ApplicationArea = Basic;
-    CardPageID = "Receipt Card";
-    DeleteAllowed = false;
-    Editable = false;
-    InsertAllowed = false;
-    ModifyAllowed = false;
-    PageType = List;
-    SourceTable = "Receipt Header";
-    SourceTableView = where(Posted = const(true));
-    UsageCategory = Lists;
+    ApplicationArea = All;
+    Caption = 'Fleet Management Lines';
+    PageType = ListPart;
+    SourceTable = "Document Line";
 
     layout
     {
@@ -22,55 +13,58 @@ Page 50007 "Posted Receipts List"
         {
             repeater(Group)
             {
-                field(No; "No.")
+                field(Type; Rec.Type)
+                {
+                    ApplicationArea = Basic;
+                    TableRelation = "Receipts and Payment Types" where(Type = const("Fleet Mgt"));
+                }
+                field(AccountType; Rec."Account Type")
                 {
                     ApplicationArea = Basic;
                 }
-                field(MemberNo; "Customer No.")
+                field("Member No."; Rec."Member No.")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Vehicle No.';
+                }
+                field(AccountNo; Rec."Account No.")
                 {
                     ApplicationArea = Basic;
                 }
-                field(MemberName; "Member Name")
+                field(Description; Rec.Description)
                 {
                     ApplicationArea = Basic;
                 }
-                field("External Document No"; "External Document No")
+                field(Amount; Rec.Amount)
+                {
+                    ApplicationArea = Basic;
+                }
+                field(TaxableAmount; Rec."Taxable Amount")
                 {
                     ApplicationArea = Basic;
                 }
 
-                field(PostingDate; "Posting Date")
+                field(TaxAmount; Rec."Tax Amount")
                 {
                     ApplicationArea = Basic;
                 }
-                field(Description; Narration)
+                field(WithholdingTax; Rec."Withholding Tax")
                 {
                     ApplicationArea = Basic;
                 }
-                field(Cashier; Cashier)
+                field(VATAmount; Rec."VAT Amount")
                 {
                     ApplicationArea = Basic;
                 }
-                field(DatePosted; "Date Posted")
+                field(WithholdingVAT; Rec."Withholding VAT")
                 {
                     ApplicationArea = Basic;
-                }
-                field(Posted; Posted)
-                {
-                    ApplicationArea = Basic;
-                }
-                field(AmountRecieved; "Amount Recieved")
-                {
-                    ApplicationArea = Basic;
-                }
-                field("Cheque No."; "Cheque No.")
-                {
-                    ApplicationArea = Basic;
-                }
-                field(payrollandstaffNo; payrollandstaffNo)
-                {
                 }
 
+                field(NetAmount; Rec."Net Amount")
+                {
+                    ApplicationArea = Basic;
+                }
             }
         }
     }
@@ -78,5 +72,10 @@ Page 50007 "Posted Receipts List"
     actions
     {
     }
+
+    var
+
+        ReceiptHeader: Record "Receipt Header";
 }
+
 

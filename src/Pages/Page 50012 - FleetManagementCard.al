@@ -1,7 +1,7 @@
 namespace DalaDala.DalaDala;
 using Microsoft.FixedAssets.FixedAsset;
 
-page 50011 "Fleet Management Card"
+page 50012 "Fleet Management Card"
 {
     ApplicationArea = All;
     Caption = 'Fleet Management Card';
@@ -133,7 +133,7 @@ page 50011 "Fleet Management Card"
                 {
                     ApplicationArea = Basic;
                 }
-               
+
 
                 field(PostedBy; "Posted By")
                 {

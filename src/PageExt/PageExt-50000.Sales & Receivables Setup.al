@@ -1,5 +1,9 @@
 
-PageExtension 50000 pageextension52188447 extends "Sales & Receivables Setup"
+/// <summary>
+/// PageExtension Sales & Receivables SetupExt (ID 50000) extends Record Sales & Receivables Setup.
+/// </summary>
+
+PageExtension 50000 "Sales & Receivables SetupExt" extends "Sales & Receivables Setup"
 {
     layout
     {
@@ -119,6 +123,18 @@ PageExtension 50000 pageextension52188447 extends "Sales & Receivables Setup"
                     ApplicationArea = Basic;
                 }
                 field("Board PVs Nos."; "Board PVs Nos.")
+                {
+                    ApplicationArea = Basic;
+                }
+                field("Petty Cash Payments No"; "Petty Cash Payments No")
+                {
+                    ApplicationArea = Basic;
+                }
+                field("Normal Payments No"; "Normal Payments No")
+                {
+                    ApplicationArea = Basic;
+                }
+                field("Cash Purchases"; "Cash Purchases")
                 {
                     ApplicationArea = Basic;
                 }

@@ -51,7 +51,7 @@ Table 50001 "Receipts and Payment Types"
         field(4; Type; Option)
         {
             NotBlank = true;
-            OptionMembers = " ",Receipt,Payment,Imprest,Claim,Advance;
+            OptionMembers = " ",Receipt,Payment,Imprest,Claim,Advance,"Fleet Mgt";
         }
         field(5; "VAT Chargeable"; Option)
         {
@@ -86,8 +86,8 @@ Table 50001 "Receipts and Payment Types"
                 GLAcc.Reset;
                 if GLAcc.Get("G/L Account") then begin
 
-                    if Type = Type::Payment then
-                        GLAcc.TestField(GLAcc."Budget Controlled", true);
+                    // if Type = Type::Payment then
+                    //     GLAcc.TestField(GLAcc."Budget Controlled", true);
 
                     if GLAcc."Direct Posting" = false then begin
                         Error('Direct Posting must be True');
