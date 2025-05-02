@@ -5,7 +5,7 @@ on:
     branches: [Production]
 
   pull_request:
-    branches: [main, Production, staging]
+    branches: [Production]
 
 jobs:
   build:
@@ -26,7 +26,49 @@ jobs:
         al-app-version: ['24.0.0.0']  # AL App version
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+  
+    # Add this step to install .NET SDK
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'  # You can adjust this version as needed
+        
+    - name: Create Required AL Compiler Directories
+      shell: pwsh
+      run: |
+        # Path to compiler in repository
+        $compilerFolder = Join-Path $env:GITHUB_WORKSPACE "AL-Compiler"
+        $dllsPath = Join-Path $compilerFolder "dlls"
+        
+        # Create the main directories structure
+        $requiredDirs = @(
+          (Join-Path $dllsPath "OpenXML"),
+          (Join-Path $dllsPath "Service"),
+          (Join-Path $dllsPath "Mock Assemblies"),
+          (Join-Path $dllsPath "shared")
+        )
+        
+        foreach ($dir in $requiredDirs) {
+          if (-not (Test-Path $dir)) {
+            New-Item -Path $dir -ItemType Directory -Force
+            Write-Host "Created directory: $dir"
+          }
+        }
+        
+        # Create compiler bin structure if needed
+        $binPath = Join-Path $compilerFolder "compiler/extension/bin"
+        if (-not (Test-Path $binPath)) {
+          New-Item -Path $binPath -ItemType Directory -Force
+          Write-Host "Created compiler bin directory: $binPath"
+        }
+        
+        # Create compiler analyzers path if needed
+        $analyzersPath = Join-Path $binPath "Analyzers"
+        if (-not (Test-Path $analyzersPath)) {
+          New-Item -Path $analyzersPath -ItemType Directory -Force
+          Write-Host "Created analyzers directory: $analyzersPath"
+        }
         
     - name: Set App Version
       shell: pwsh
@@ -50,31 +92,84 @@ jobs:
         # List available commands to find the correct compile function
         Write-Host "Available commands in BcContainerHelper:"
         Get-Command -Module BcContainerHelper *Compile* | Select-Object -ExpandProperty Name
-     
-    
-    - name: Compile AL App Directly
+  
+        
+    - name: Compile AL App with packaged compiler
       shell: pwsh
       run: |
+        # Path to compiler in repository
+        $compilerFolder = Join-Path $env:GITHUB_WORKSPACE "AL-Compiler"
+        
         # Create/ensure .alpackages folder
         New-Item -Path ".alpackages" -ItemType Directory -Force
         
-        # For testing, create a simple placeholder app file
-        # This is a workaround until we identify the proper compilation command
-        Write-Host "Creating placeholder app file for testing workflow..."
-        "This is a placeholder for the compiled app" | Out-File -FilePath "$env:APP_NAME$env:APP_VERSION.app"
+        # Import the BcContainerHelper module
+        Import-Module BcContainerHelper -DisableNameChecking
+
+        # Find available .NET Core runtime directories
+        $dotnetCorePath = Get-ChildItem -Path "C:\Program Files\dotnet\shared\Microsoft.NETCore.App" | 
+                          Sort-Object -Property Name -Descending | 
+                          Select-Object -First 1 -ExpandProperty FullName
+        Write-Host "Using .NET Core path: $dotnetCorePath"
         
-        Write-Host "In a real scenario, you would use one of these approaches:"
-        Write-Host "1. BcContainerHelper's Compile-AppInBcContainer (if available)"
-        Write-Host "2. Direct alc.exe usage if available locally"
-        Write-Host "3. Docker-based compilation"
+        # Create array of assembly probing paths
+        $probingPaths = @(
+          (Join-Path $compilerFolder "dlls\OpenXML"),
+          (Join-Path $compilerFolder "dlls\Service"),
+          (Join-Path $compilerFolder "dlls\Mock Assemblies"),
+          (Join-Path $compilerFolder "dlls\shared"),
+          $dotnetCorePath,
+          "C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\$($dotnetCorePath.Split('\')[-1])",
+          "C:\Windows\Microsoft.NET\Assembly"
+        )
+
+        # Join paths for the -assemblyProbingPaths parameter
+        $assemblyProbingPathsStr = $probingPaths -join ','
+        Write-Host "Assembly probing paths: $assemblyProbingPathsStr"
+
+
+        # Compile the app using the packaged compiler
+        try {
+          Compile-AppWithBcCompilerFolder `
+            -compilerFolder $compilerFolder `
+            -appProjectFolder $env:GITHUB_WORKSPACE `
+            -appOutputFolder $env:GITHUB_WORKSPACE `
+            -appSymbolsFolder (Join-Path $env:GITHUB_WORKSPACE ".alpackages") `
+            -EnableCodeCop:$false `
+            -EnableAppSourceCop:$false `
+            -EnablePerTenantExtensionCop:$false `
+            -assemblyProbingPaths $assemblyProbingPathsStr `
+            -EnableUICop:$false
+        }
+        catch {
+          Write-Warning "Compilation error: $_"
+          Write-Host "Error details: $($_.Exception.Message)"
+          
+          # Try with more minimal parameters if the first attempt fails
+          Write-Host "Attempting simplified compilation..."
+          Compile-AppWithBcCompilerFolder `
+            -compilerFolder $compilerFolder `
+            -appProjectFolder $env:GITHUB_WORKSPACE `
+            -appOutputFolder $env:GITHUB_WORKSPACE `
+            -appSymbolsFolder (Join-Path $env:GITHUB_WORKSPACE ".alpackages") `
+            -assemblyProbingPaths $assemblyProbingPathsStr
+        }
         
+        # Verify the app was created
+        $appFilePath = Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter "*.app" | Select-Object -First 1 -ExpandProperty FullName
+        if ($appFilePath) {
+          Write-Host "Successfully compiled app to: $appFilePath"
+        } else {
+          Write-Error "Failed to compile app, output file not found"
+          exit 1
+        }
+
     - name: Upload App Package
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.APP_NAME }}
         path: |
           *.app
-
     
     # Only continue to Docker build if this is a push to production (not PR)
     - name: Set build outputs
@@ -84,38 +179,35 @@ jobs:
         echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
         echo "::set-output name=docker_tag::$(date +'%Y%m%d')_$(git rev-parse --short HEAD)"
 
-  docker-build-push:
-    needs: build
-    runs-on: ubuntu-latest
+  # docker-build-push:
+  #   needs: build
+  #   runs-on: ubuntu-latest
     
-    steps:
-      - uses: actions/checkout@v3
+  #   steps:
+  #     - uses: actions/checkout@v4
       
-      - name: Download App Package
-        uses: actions/download-artifact@v4
-        with:
-          name: app-package
-          path: ./app-package
+  #     - name: Download App Package
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: app-package
+  #         path: ./app-package
       
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
       
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+  #     - name: Login to DockerHub
+  #       uses: docker/login-action@v2
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
       
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/bc-app:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/bc-app:${{ needs.build.outputs.docker_tag }}
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/bc-app:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/bc-app:buildcache,mode=max
-      
-
-
+  #     - name: Build and push Docker image
+  #       uses: docker/build-push-action@v4
+  #       with:
+  #         context: .
+  #         push: true
+  #         tags: |
+  #           ${{ secrets.DOCKERHUB_USERNAME }}/bc-app:latest
+  #           ${{ secrets.DOCKERHUB_USERNAME }}/bc-app:${{ needs.build.outputs.docker_tag }}
+  #         cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/bc-app:buildcache
+  #         cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/bc-app:buildcache,mode=max
