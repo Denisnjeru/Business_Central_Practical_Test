@@ -2,10 +2,10 @@ name: Business Central CI/CD Pipeline
 
 on:
   push:
-    branches: [Production]
+    branches: [Production, Staging]
 
   pull_request:
-    branches: [Production]
+    branches: [Production, Staging]
 
 jobs:
   build:
