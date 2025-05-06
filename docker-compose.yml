@@ -1,0 +1,29 @@
+services:
+  bc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: daladala
+    hostname: daladala
+    ports:
+      - "443:443"
+      - "7045:7045"
+      - "7046:7046"
+      - "7047:7047"
+      - "7048:7048"
+      - "7049:7049"
+      - "8080:80"
+    environment:
+      - accept_eula=Y
+      - username=admin
+      - password=P@ssword1
+    volumes:
+      - bc_data:/mnt/volumes
+    restart: unless-stopped
+volumes:
+  bc_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/volumes
+      o: bind
