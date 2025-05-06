@@ -178,6 +178,34 @@ jobs:
         echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
         echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
         echo "::set-output name=docker_tag::$(date +'%Y%m%d')_$(git rev-parse --short HEAD)"
+    
+    - name: Create Business Central Container & Commit Image
+      shell: pwsh
+      run: |
+        # 1) Grab the artifacts & build the container with your .app published
+        $artifactUrl = Get-BcArtifactUrl `
+          -version ${{ matrix.bc-version }} `
+          -country 'w1' `
+          -select 'Latest'
+        Write-Host "Artifact URL: $artifactUrl"
+
+        New-BcContainer `
+          -artifactUrl $artifactUrl `
+          -containerName bc-build-${{ github.run_number }} `
+          -includeApps "$env:GITHUB_WORKSPACE\*.app" `
+          -accept_eula
+
+        # 2) Commit that container to a new image
+        $imageTag = "daladala/bc-app:${{ github.run_number }}"
+        docker commit bc-build-${{ github.run_number }} $imageTag
+        Write-Host "Created image: $imageTag"
+
+        # 3) Push (if you have DockerHub creds set up on this runner)
+        docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+        docker push $imageTag
+
+        # 4) Clean up
+        Remove-BcContainer -containerName bc-build-${{ github.run_number }} -force
 
   # docker-build-push:
   #   needs: build
@@ -212,36 +240,36 @@ jobs:
   #         cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/bc-app:buildcache
   #         cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/bc-app:buildcache,mode=max
 
-  docker-build-push:
-    needs: build
-    runs-on: windows-latest
+  # docker-build-push:
+  #   needs: build
+  #   runs-on: windows-latest
 
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Download Compiled App Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ env.APP_NAME }}
-          path: ./app
+  #     - name: Download Compiled App Artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: ${{ env.APP_NAME }}
+  #         path: ./app
 
-      - name: Install BcContainerHelper
-        shell: pwsh
-        run: |
-          Install-Module BcContainerHelper -Force
-          Import-Module BcContainerHelper
+  #     - name: Install BcContainerHelper
+  #       shell: pwsh
+  #       run: |
+  #         Install-Module BcContainerHelper -Force
+  #         Import-Module BcContainerHelper
 
-      - name: Create Business Central Image with App
-        shell: pwsh
-        run: |
-          $artifactUrl = Get-BcArtifactUrl -version '24.0' -country 'w1' -select 'Latest'
-          Write-Host "Using Artifact URL: $artifactUrl"
+  #     - name: Create Business Central Image with App
+  #       shell: pwsh
+  #       run: |
+  #         $artifactUrl = Get-BcArtifactUrl -version '24.0' -country 'w1' -select 'Latest'
+  #         Write-Host "Using Artifact URL: $artifactUrl"
 
-          New-BcImage `
-            -artifactUrl $artifactUrl `
-            -imageName "daladala/bc-app:${{ github.run_number }}" `
-            -includeApp "./app/*.app" `
-            -multitenant:$true `
-            -genericImageName "mcr.microsoft.com/businesscentral:generic"
+  #         New-BcImage `
+  #           -artifactUrl $artifactUrl `
+  #           -imageName "daladala/bc-app:${{ github.run_number }}" `
+  #           -includeApp "./app/*.app" `
+  #           -multitenant:$true `
+  #           -genericImageName "mcr.microsoft.com/businesscentral:generic"
 
-          Write-Host "Successfully created custom BC Docker image with your .app file."
+  #         Write-Host "Successfully created custom BC Docker image with your .app file."
