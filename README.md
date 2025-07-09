@@ -32,3 +32,13 @@ Folder in a Business Central project functions as a local repository for extensi
 
 3. **.test/**
 Unit tests, integration tests… go here.
+
+
+
+### Summary of what was done 
+1. I extended the Sales Header Table and added the two new fields.
+2. I extended the Sales Heder Page and also added the two new fields but only visible if the document type is Order.
+3. Added validation on the OnAction trigger of Posting to prevent posting if Delivery Method is Courier and Document Type if Order.
+5. Added the same validation on the subscriptions OnBeforeConfirmPost and OnBeforeConfirmPostAndSend events.
+6. Created the Delivery Instruction Log Table.
+7. On the OnModify Trigger Action on the Sales Header table I added an extra procedure that checks if the 'Delivery Instruction' field has been changed it logs on the previously created table
