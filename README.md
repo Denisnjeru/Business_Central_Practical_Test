@@ -56,7 +56,6 @@ Check if the Delivery Instruction field is modified.
 Log the change into the Delivery Instruction Log table.
 
 
-
 ### Steps on Testing
 On the Role Center
 
