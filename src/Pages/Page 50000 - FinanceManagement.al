@@ -119,10 +119,9 @@ page 50000 "Finance Management"
         area(sections)
         {
 
-            group(Action157)//FINANCE
+            group(Action157)
             {
                 Caption = 'Finance';
-                //START
                 group(GeneralLedger)
                 {
                     Caption = 'General Ledger';
@@ -169,7 +168,7 @@ page 50000 "Finance Management"
                     }
 
                 }
-                //FINish
+
                 group(CashManagement)
                 {
                     Caption = 'Cash Management';
@@ -214,7 +213,7 @@ page 50000 "Finance Management"
 
 
                 }
-                //START
+
                 group(Receivables)
                 {
                     Caption = 'Receivables';
@@ -224,28 +223,28 @@ page 50000 "Finance Management"
                         ApplicationArea = RelationshipMgmt;
                         Caption = 'Customers';
                         Image = "Order";
-
-
                         RunObject = Page "Customer List";
+                    }
+                    action("Sales Orders")
+                    {
+                        ApplicationArea = Suite, RelationshipMgmt;
+                        Caption = 'Sales Orders';
+                        Image = Reminder;
+                        RunObject = Page "Sales Order List";
                     }
                     action("Sales Invoice")
                     {
                         ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'Sales Invoice';
+                        Caption = 'Sales Invoices';
                         Image = Reminder;
-
-
-                        RunObject = Page "Sales Invoice List";
+                        RunObject = Page "Sales Invoice";
                     }
                     action("Posted Sales Invoice")
                     {
                         ApplicationArea = Suite, RelationshipMgmt;
                         Caption = 'Posted Sales Invoice';
                         Image = Reminder;
-
-
                         RunObject = Page "Posted Sales Invoices";
-
                     }
 
                     action("Sales Credit Memo")
@@ -253,8 +252,6 @@ page 50000 "Finance Management"
                         ApplicationArea = Suite, RelationshipMgmt;
                         Caption = 'Sales Credit Memo';
                         Image = Reminder;
-
-
                         RunObject = Page "Sales Credit Memos";
                     }
 
@@ -273,16 +270,11 @@ page 50000 "Finance Management"
                     {
                         ApplicationArea = Suite, RelationshipMgmt;
                         Image = Reminder;
-
-
                         RunObject = Report "Customer - Summary Aging";
                     }
 
                 }
 
-
-
-                //FINISH
                 group(Payables)
                 {
                     Caption = 'Payables';
@@ -435,88 +427,6 @@ page 50000 "Finance Management"
 
             }
 
-            group(Action57)
-            {
-                Caption = 'Funds Management';
-
-                group(Receipts)
-                {
-                    Caption = 'Receipts';
-
-                    action(Receipt)
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Receipts List';
-                        Image = CustomerContact;
-                        RunObject = Page "Receipts List";
-                    }
-                    action("Posted Receipts")
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Posted Receipts';
-                        RunObject = Page "Posted Receipts List";
-                    }
-                    action("Receipts - report")
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Receipts Report';
-                        Image = Receipt;
-                        RunObject = Report Receipt;
-                    }
-                }
-                group(PaymentsVouchers)
-                {
-                    Caption = 'Payments';
-
-                    action(Payments)
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Payment Voucher';
-                        Image = CustomerContact;
-                        RunObject = Page "Payment Vouchers List";
-                    }
-
-                    action(PostedPaymentsVouchers)
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Posted Payment Voucher';
-                        Image = CustomerContact;
-                        RunObject = Page "Posted Payment Vouchers List";
-                    }
-
-                    action("Payments Report")
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        RunObject = Report "Payments Report";
-                    }
-                }
-                group(Setup)
-                {
-                    Caption = 'Setup';
-
-                    action(FundsSetup)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Sales & Receivables Setup';
-                        Image = CustomerContact;
-                        RunObject = Page 459;
-                    }
-                    action(ReceiptPaymentTypesList)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Receipt and Payment Types List';
-                        RunObject = Page "Receipt and Payment Types List";
-                    }
-                    action(CashOfficeUserTemplate)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Cash Office User Template';
-                        RunObject = Page "Cash Office User Template";
-                    }
-                }
-
-            }
-
             group(Action588)
             {
                 Caption = 'Inventory Management';
@@ -530,21 +440,6 @@ page 50000 "Finance Management"
                 }
 
             }
-
-            group(Action59)
-            {
-                Caption = 'Fleet Management';
-                action(Fleet001)
-                {
-                    ApplicationArea = RelationshipMgmt;
-                    Caption = 'Fleet Management';
-                    Image = "Order";
-                    RunObject = page "Fleet Management List";
-                }
-            }
-
-
-
         }
 
         area(processing)
