@@ -30,15 +30,38 @@ List of blobs for git to ignore. Affects commands like git add and git clean. Yo
 2. **.alpackages/**
 Folder in a Business Central project functions as a local repository for extension packages (.app files) that your project depends on, including Microsoft base extensions, third-party extensions, and your own referenced extensions. This critical directory enables the AL compiler to resolve symbol definitions from dependencies, providing IntelliSense support and ensuring proper code compilation during development.
 
-3. **.test/**
-Unit tests, integration tests… go here.
-
-
-
 ### Summary of what was done 
-1. I extended the Sales Header Table and added the two new fields.
-2. I extended the Sales Heder Page and also added the two new fields but only visible if the document type is Order.
-3. Added validation on the OnAction trigger of Posting to prevent posting if Delivery Method is Courier and Document Type if Order.
-5. Added the same validation on the subscriptions OnBeforeConfirmPost and OnBeforeConfirmPostAndSend events.
-6. Created the Delivery Instruction Log Table.
-7. On the OnModify Trigger Action on the Sales Header table I added an extra procedure that checks if the 'Delivery Instruction' field has been changed it logs on the previously created table
+1. Extended the Sales Header table by adding two new fields.
+
+2. Extended the Sales Header page to display the new fields only when Document Type = Order.
+
+3. Added validation on the Post action to prevent posting if:
+
+   Delivery Method = Courier
+
+   Document Type = Order
+
+4. Added the same validation using event subscribers on:
+
+   OnBeforeConfirmPost
+
+   OnBeforeConfirmPostAndSend
+
+5. Created a Delivery Instruction Log table to record changes.
+
+Hooked into the OnModify trigger on the Sales Header to:
+
+Check if the Delivery Instruction field is modified.
+
+Log the change into the Delivery Instruction Log table.
+
+
+
+### Steps on Testing
+On the Role Center
+
+1. Includes a Sales Order list to quickly create and test new orders.
+
+2. Delivery Instruction Log
+
+A page below the Sales Order list shows logs of all changes made to the Delivery Instruction field.
