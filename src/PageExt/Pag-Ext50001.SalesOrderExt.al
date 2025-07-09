@@ -86,6 +86,5 @@ pageextension 50001 "Sales Order Ext." extends "Sales Order"
         if Rec."Document Type" = Rec."Document Type"::Order then
             if Rec."Delivery Method" = Rec."Delivery Method"::Courier then
                 if Rec."Delivery Instructions" = '' then Error('You must provide delivery instructions when the delivery method is Courier!');
-
     end;
 }
