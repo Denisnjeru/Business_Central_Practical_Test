@@ -143,6 +143,14 @@ page 50000 "Finance Management"
                         RunObject = Page "Sales Order List";
                     }
 
+                    action("Sales Invoices")
+                    {
+                        ApplicationArea = Suite, RelationshipMgmt;
+                        Caption = 'Sales Invoices';
+                        Image = Reminder;
+                        RunObject = Page "Sales Order List";
+                    }
+
                     action("Delivery Instruction Logs")
                     {
                         ApplicationArea = Suite, RelationshipMgmt;

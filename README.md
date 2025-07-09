@@ -21,7 +21,6 @@
 ### Alternatively use the (Ctrl + Shift + B) command to build the app (an .app file) that can be used to publish the application directly on the powershell
 
 
-
 ### Project Structure
 
 1. **.gitignore** 
