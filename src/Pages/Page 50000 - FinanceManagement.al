@@ -121,102 +121,11 @@ page 50000 "Finance Management"
 
             group(Action157)
             {
-                Caption = 'Finance';
-                group(GeneralLedger)
+                Caption = 'Sales Processing';
+
+                group(Sales)
                 {
-                    Caption = 'General Ledger';
-
-                    action(Action267)
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Chart of Accounts';
-                        Image = CustomerContact;
-
-
-                        RunObject = Page "Chart of Accounts";
-                    }
-
-                    action(Action166)
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'G/L Budgets';
-
-
-                        RunObject = Page "G/L Budget Names";
-                    }
-                    action(Action165)
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'General Journal';
-                        Image = Quote;
-                        Visible = false;
-
-
-                        RunObject = Page "General Journal";
-                    }
-
-
-
-                    action(Action2367)
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Account Schedules';
-                        Image = Quote;
-
-
-                        RunObject = Page "Account Schedule Names";
-                    }
-
-                }
-
-                group(CashManagement)
-                {
-                    Caption = 'Cash Management';
-
-                    action(Action634)
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Bank Account List';
-                        Image = Bank;
-
-
-                        RunObject = Page "Bank Account List";
-                    }
-                    action("Cash Receipt Journal")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'Cash Receipt Journal';
-                        Image = Reminder;
-
-
-                        RunObject = Page "Cash Receipt Journal";
-                    }
-                    action("Payment Journal")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'Payment Journal';
-                        Image = Reminder;
-
-
-                        RunObject = Page "Payment Journal";
-                    }
-                    action("Bank Acc. Reconciliation List")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'Bank Acc. Reconciliation';
-                        Image = Reminder;
-
-
-                        RunObject = Page "Bank Acc. Reconciliation List";
-                    }
-
-
-
-                }
-
-                group(Receivables)
-                {
-                    Caption = 'Receivables';
+                    Caption = 'Sales';
 
                     action(Action639)
                     {
@@ -225,6 +134,7 @@ page 50000 "Finance Management"
                         Image = "Order";
                         RunObject = Page "Customer List";
                     }
+
                     action("Sales Orders")
                     {
                         ApplicationArea = Suite, RelationshipMgmt;
@@ -232,213 +142,17 @@ page 50000 "Finance Management"
                         Image = Reminder;
                         RunObject = Page "Sales Order List";
                     }
-                    action("Sales Invoice")
+
+                    action("Delivery Instruction Logs")
                     {
                         ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'Sales Invoices';
+                        Caption = 'Delivery Instruction Log List';
                         Image = Reminder;
-                        RunObject = Page "Sales Invoice";
-                    }
-                    action("Posted Sales Invoice")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'Posted Sales Invoice';
-                        Image = Reminder;
-                        RunObject = Page "Posted Sales Invoices";
-                    }
-
-                    action("Sales Credit Memo")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'Sales Credit Memo';
-                        Image = Reminder;
-                        RunObject = Page "Sales Credit Memos";
-                    }
-
-                    action("Posted Sales Credit Memo")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'Posted Sales Credit Memo';
-                        Image = Reminder;
-
-
-                        RunObject = Page "Posted Sales Credit Memos";
-                    }
-
-
-                    action("Customer - Summary Aging")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Image = Reminder;
-                        RunObject = Report "Customer - Summary Aging";
-                    }
-
-                }
-
-                group(Payables)
-                {
-                    Caption = 'Payables';
-
-                    action(Action239)
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Vendors';
-                        Image = "Order";
-
-
-                        RunObject = Page "Vendor List";
-                    }
-                    action("Purchase Invoice")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'Purchase Invoice';
-                        Image = Reminder;
-
-
-                        RunObject = Page "Purchase Invoices";
-                    }
-                    action("Posted Purchase Invoice")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'Posted Purchase Invoice';
-                        Image = Reminder;
-
-
-                        RunObject = Page "Posted Purchase Invoices";
-                    }
-
-                    action("Purchase Credit Memo")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'Purchase Credit Memo';
-                        Image = Reminder;
-
-
-                        RunObject = Page "Purchase Credit Memos";
-                    }
-
-                    action("Posted Purchase Credit Memo")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'Posted Purchase Credit Memo';
-                        Image = Reminder;
-
-
-                        RunObject = Page "Posted Purchase Credit Memos";
-                    }
-                    action("Vendor - Summary Aging")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Image = Reminder;
-
-
-                        RunObject = Report "Vendor - Summary Aging";
+                        RunObject = Page "Delivery Instruction Log List";
                     }
 
 
                 }
-
-
-                group(FixedAssets)
-                {
-                    Caption = 'Fixed Assets';
-
-                    action(Action229)
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Fixed Assets';
-                        Image = "Order";
-                        RunObject = Page "Fixed Asset List";
-                    }
-
-                    action("Fixed Asset G/L Journal")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'FA G/L Journal';
-                        Image = Reminder;
-
-
-                        RunObject = Page "Fixed Asset G/L Journal";
-                    }
-                    action("Fixed Asset Journal")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'FA Journal';
-                        Image = Reminder;
-
-
-                        RunObject = Page "Fixed Asset Journal";
-                    }
-
-                    action("FA Reclass. Journals")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'FA Reclass. Journals';
-                        Image = Reminder;
-
-
-                        RunObject = Page "FA Reclass. Journal";
-                    }
-                    action("Calculate Depreciation")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        Caption = 'Calculate Depreciation';
-                        Image = Reminder;
-
-
-                        RunObject = Report "Calculate Depreciation";
-                    }
-                    action("Fixed Asset List")
-                    {
-                        ApplicationArea = Suite, RelationshipMgmt;
-                        RunObject = Report "Fixed Asset Register";
-                        Caption = 'Fixed Asset List';
-                    }
-                }
-
-                group(FixedAssetsReports)
-                {
-                    Caption = 'Fixed Assets Reports';
-
-
-                    action(FAR004)
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Fixed Assets Register';
-                        Image = "Order";
-                        RunObject = report "Fixed Asset Register";
-                    }
-                    action(FAR002)
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Fixed Asset - Book Value 01';
-                        Image = "Order";
-                        RunObject = report "Fixed Asset - Book Value 01";
-                    }
-                    action(FAR005)
-                    {
-                        ApplicationArea = RelationshipMgmt;
-                        Caption = 'Fixed Asset - Book Value 02';
-                        Image = "Order";
-                        RunObject = report "Fixed Asset - Book Value 02";
-                    }
-
-                }
-
-            }
-
-            group(Action588)
-            {
-                Caption = 'Inventory Management';
-
-                action(ITM0001)
-                {
-                    ApplicationArea = RelationshipMgmt;
-                    Caption = 'Items';
-                    Image = "Order";
-                    RunObject = page "Item List";
-                }
-
             }
         }
 

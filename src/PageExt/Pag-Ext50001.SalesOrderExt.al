@@ -26,6 +26,32 @@ pageextension 50001 "Sales Order Ext." extends "Sales Order"
         }
     }
 
+    actions
+    {
+        modify(Post)
+        {
+            trigger OnBeforeAction()
+            begin
+                ValidatePosting();
+            end;
+        }
+        modify(PostAndNew)
+        {
+            trigger OnBeforeAction()
+            begin
+                ValidatePosting();
+            end;
+        }
+
+        modify("Test Report")
+        {
+            trigger OnBeforeAction()
+            begin
+                ValidatePosting();
+            end;
+        }
+    }
+
     var
         IsVisible: Boolean;
 
@@ -49,5 +75,17 @@ pageextension 50001 "Sales Order Ext." extends "Sales Order"
             IsVisible := True
         else
             IsVisible := False;
+    end;
+
+
+    /// <summary>
+    /// ValidatePosting.
+    /// </summary>
+    procedure ValidatePosting()
+    begin
+        if Rec."Document Type" = Rec."Document Type"::Order then
+            if Rec."Delivery Method" = Rec."Delivery Method"::Courier then
+                if Rec."Delivery Instructions" = '' then Error('You must provide delivery instructions when the delivery method is Courier!');
+
     end;
 }
